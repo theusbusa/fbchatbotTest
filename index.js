@@ -9,7 +9,7 @@ const
 	request = require('request'), // don't forget to install this! npm install request --save
 	crypto = require("crypto"), // don't forget to install this! npm install crypto --save
 	config = require("./services/config"),
-	app = express(); // creates express http server
+	app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
