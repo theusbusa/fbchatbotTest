@@ -18,7 +18,7 @@ module.exports = class GraphAPi {
 			}
 
 			return userProfile;
-		} catech (err) {
+		} catch (err) {
 			console.log("Fetch failed:", err);
 		}
 	}
