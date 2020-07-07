@@ -69,7 +69,7 @@ module.exports = class Receive {
 
         console.log("USER PROFILE:", this.user.firstName)
         if (message === "hello" || message === "hi") {
-            response = Response.genText("Hi! What can we do to help you today?")
+            response = Response.genText("Hi, " + this.user.firstName + "! What can we do to help you today?")
         } else {
             response = Response.genText("I don't understand.")
         }
