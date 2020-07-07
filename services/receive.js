@@ -67,7 +67,6 @@ module.exports = class Receive {
 
         let response;
 
-        console.log("USER PROFILE:", this.user.firstName)
         if (message === "hello" || message === "hi") {
             response = Response.genText("Hi, " + this.user.firstName + "! What can we do to help you today?")
         } else {
@@ -75,6 +74,24 @@ module.exports = class Receive {
         }
 
         return response;
+    }
+
+    // Handles mesage events with quick replies
+    handleQuickReply() {
+        // Get the payload of the quick reply
+        let payload = this.webhookEvent.message.quick_reply.payload;
+
+        return this.handlePayload(payload);
+    }
+
+    handlePayload(payload) {
+        // Log CTA event in FBA
+        GraphAPi.callFBAEventsAPI(this.user.psid, payload);
+
+        let response;
+
+        // Set the response based on the payload
+        console.log("PAYLOAD:", payload)
     }
 
     sendMessage(response, delay = 0) {
