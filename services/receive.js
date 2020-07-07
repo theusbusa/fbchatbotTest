@@ -17,11 +17,17 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("DATABASE CONNECTED!");
 
+    var array = []
     con.query("SELECT DISTINCT category FROM Products", function (err, result, fields) {
         if (err) throw err;
-        console.log(result[0].category);
-        console.log(result[1].category);
+
+        for (var i = 0; i < result.length; i++) {
+            array.push(result[i].category);
+        }
     });
+
+    console.log(array);
+
 });
 
 module.exports = class Receive {
