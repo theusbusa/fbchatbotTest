@@ -67,7 +67,7 @@ module.exports = class Receive {
 
         let response;
 
-        console.log(this.webhookEvent)
+        console.log("PWENDER ID:", this.webhookEvent.sender.id)
         if (message === "hello" || message === "hi") {
             response = Response.genText("Hi! What can we do to help you today?")
         } else {

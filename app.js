@@ -102,7 +102,17 @@ app.post('/webhook', (req, res) => {
 						let receiveMessage = new Receive(users[sender_psid], webhook_event);
 						return receiveMessage.handleMessage();
 					});
-			}
+			} else {
+				i18n.setLocale(users[sender_psid].locale);
+				console.log(
+					"Profile already exists PSID:",
+					sender_psid,
+					"with locale",
+					i18n.getLocale()
+				);
+				let receiveMessage = new Receive(users[sender_psid], webhook_event);
+				return receiveMessage.handleMessage();
+            }
 		});
 
 		// Returns a '200 OK' response to all requests
