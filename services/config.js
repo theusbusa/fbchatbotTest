@@ -34,7 +34,7 @@ module.exports = {
   // Preferred port (default to 3000)
   port: process.env.PORT || 3000,
 
-  get mPlatfom() {
+  get mPlatform() {
     return this.mPlatformDomain + "/" + this.mPlatformVersion;
   },
 
