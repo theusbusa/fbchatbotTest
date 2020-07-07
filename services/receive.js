@@ -67,11 +67,11 @@ module.exports = class Receive {
 
         let response;
 
-        console.log("PWENDER ID:", this.webhookEvent.sender.id)
+        console.log("USER PROFILE:", GraphAPi.getUserProfile(this.webhookEvent.sender.id))
         if (message === "hello" || message === "hi") {
             response = Response.genText("Hi! What can we do to help you today?")
         } else {
-            reponse = Response.genText("I don't understand.")
+            response = Response.genText("I don't understand.")
         }
 
         return response;
