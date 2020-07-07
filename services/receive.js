@@ -68,9 +68,21 @@ module.exports = class Receive {
         let response;
 
         if (message === "hello" || message === "hi") {
-            response = Response.genText("Hi, " + this.user.firstName + "! What can we do to help you today?")
+            response = [
+                //Response.genText("Hi, " + this.user.firstName + "! What can we do to help you today?"),
+                Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
+                    {
+                        title: "Shop",
+                        payload: "shop"
+                    },
+                    {
+                        title: "FAQs",
+                        payload: "faqs"
+                    }
+                ])
+            ];
         } else {
-            response = Response.genText("I don't understand.")
+            response = Response.genText("I don't understand.");
         }
 
         return response;
