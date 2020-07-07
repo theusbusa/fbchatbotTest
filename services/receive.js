@@ -103,7 +103,13 @@ module.exports = class Receive {
         let response;
 
         // Set the response based on the payload
-        console.log("PAYLOAD:", payload)
+        if (payload === "shop") {
+            response = Response.genText("What are you looking for?");
+        } else if (payload === "faqs") {
+            response = Response.genText("Please select from the following FAQs:")
+        }
+
+        return response;
     }
 
     sendMessage(response, delay = 0) {
