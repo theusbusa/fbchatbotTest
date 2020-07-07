@@ -3,7 +3,19 @@
 const
     Response = require("./response"),
     GraphAPi = require("./graph-api"),
+    mysql = require("mysql"), // npm install mysql --save
     i18n = require("../i18n.config");
+
+var con = mysql.createConnection({
+    host: "dev-db.cgy3xpod6h10.ap-southeast-1.rds.amazonaws.com",
+    user: "root",
+    password: "0^^N!pot3ncE"
+});
+
+con.connect(function (err) {
+    if (err) throw err;
+    console.log("DATABASE CONNECTED!");
+});
 
 module.exports = class Receive {
     constructor(user, webhookEvent) {
