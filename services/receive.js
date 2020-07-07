@@ -13,11 +13,13 @@ var con = mysql.createConnection({
     database: "omnichannel"
 });
 
+var array = []
+
 con.connect(function (err) {
     if (err) throw err;
     console.log("DATABASE CONNECTED!");
 
-    var array = []
+    
     con.query("SELECT DISTINCT category FROM Products", function (err, result, fields) {
         if (err) throw err;
 
