@@ -67,24 +67,8 @@ module.exports = class Receive {
 
         let response;
 
-        response = [
-            Response.genText(
-                i18n.__("fallback.any", {
-                    message: this.webhookEvent.message.text
-                })
-            ),
-            Response.genText(i18n.__("get_started.guidance")),
-            Response.genQuickReply(i18n.__("get_started.help"), [
-                {
-                    title: i18n.__("menu.suggestion"),
-                    payload: "CURATION"
-                },
-                {
-                    title: i18n.__("menu.help"),
-                    payload: "CARE_HELP"
-                }
-            ])
-        ];
+        console.log(message)
+        response = [Response.genText("TEST")]
 
         return response;
     }
