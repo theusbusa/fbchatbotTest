@@ -10,7 +10,7 @@ module.exports = class GraphAPi {
 		// Send the HTTP request to the Messenger Platform
 		request(
 			{
-				uri: `${config.mPlatfom}/me/messages`,
+				uri: `${config.mPlatform}/me/messages`,
 				qs: {
 					access_token: config.pageAccesToken
 				},
