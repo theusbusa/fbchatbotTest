@@ -6,10 +6,23 @@
 const
 	express = require('express'),
 	{ urlencoded, json } = require('body-parser'),
+	Receive = require("./services/receive"),
+	GraphAPi = require("./services/graph-api"),
+	User = require("./services/user"),
 	request = require('request'), // don't forget to install this! npm install request --save
 	crypto = require("crypto"), // don't forget to install this! npm install crypto --save
 	config = require("./services/config"),
+	i18n = require("./i18n.config"),
 	app = express(); // creates express http server
+
+var users = {};
+
+// Parse application/x-www-form-urlencoded
+app.use(
+	urlencoded({
+		extended: true
+	})
+);
 
 // Parse application/json. Verify that callback came from Facebook
 app.use(json({ verify: verifyRequestSignature }));
@@ -24,22 +37,71 @@ app.post('/webhook', (req, res) => {
 
 		// Iterates over each entry - there may be multiple if batched
 		body.entry.forEach(function(entry) {
+			if ("changes" in entry) {
+				// Handle Page Changes event
+				let receiveMessage = new Receive();
+
+				if (entry.changes[0].field === "feed") {
+					let change = entry.changes[0].value;
+
+					switch (change.item) {
+						case "post":
+							return receiveMessage.handlePrivateReply(
+								"post_id",
+								change.post_id
+							);
+						case "comment":
+							return receiveMessage.handlePrivateReply(
+								"comment_id",
+								change.comment_id
+							);
+						default:
+							console.log("Unsupported feed change type.");
+							return;
+					}
+				}
+			}
 
 			// Gets the message. entry.messaging is an array, but
 			// will only ever contain one message, so we get index 0
 			let webhook_event = entry.messaging[0];
 			console.log(webhook_event);
 
+			// Discard uninteresting events
+			if ("red" in webhook_event) {
+				return;
+			}
+
+			if ("delivery" in webhook_event) {
+				return;
+			}
+
 			// Get the sender PSID
 			let sender_psid = webhook_event.sender.id;
 			console.log('Sender PSID: ' + sender_psid);
 
-			// Check if the event is a message or postback and
-			// pass the event to the appropriate handler function
-			if (webhook_event.message) {
-				handleMessage(sender_psid, webhook_event.message);
-			} else if (webhook_event.postback) {
-				handlePostback(sender_psid, webhook_event.postback);
+			if (!(sender_psid in users)) {
+				let user = new User(sender_psid);
+
+				GraphAPi.getUserProfile(sender_psid)
+					.then(userProfile => {
+						user.setProfile(userProfile);
+					})
+					.catch(error => {
+						console.log("Profile is unavailable:", error);
+					})
+					.finally(() => {
+						users[sender_psid] = user;
+						i18n.setLocale(user.locale);
+						console.log(
+							"New Profile PSID:",
+							sender_psid,
+							"with locale:",
+							i18n.getLocale()
+						);
+						let receiveMessage = new Receive(users[sender_psid], webhook_event);
+						return receiveMessage.handleMessage();
+					});
 			}
 		});
 

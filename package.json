@@ -10,8 +10,11 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "camelcase": "^6.0.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "i18n": "^0.10.0",
+    "path": "^0.12.7",
     "request": "^2.88.2"
   }
 }
