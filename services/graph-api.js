@@ -28,6 +28,7 @@ module.exports = class GraphAPi {
 			let body = [];
 
 			// Send the HTTP request to the Graph API
+			console.log("WAWAWA:", config.mPlatform)
 			request({
 				"uri": `${config.mPlatform}/${senderPsid}`,
 				"qs": {
