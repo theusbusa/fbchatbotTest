@@ -13,7 +13,7 @@ var con = mysql.createConnection({
     database: "omnichannel"
 });
 
-var array = []
+//var array = []
 
 con.connect(function (err) {
     if (err) throw err;
@@ -23,10 +23,10 @@ con.connect(function (err) {
     con.query("SELECT DISTINCT category FROM Products", function (err, result, fields) {
         if (err) throw err;
 
-        for (var i = 0; i < result.length; i++) {
-            console.log(result[i].category);
-            array.push(result[i].category);
-        }
+        //for (var i = 0; i < result.length; i++) {
+        //    console.log(result[i].category);
+       //     array.push(result[i].category);
+        //}
     });
 
     console.log(array);
