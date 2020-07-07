@@ -10,7 +10,7 @@ var con = mysql.createConnection({
     host: "dev-db.cgy3xpod6h10.ap-southeast-1.rds.amazonaws.com",
     user: "root",
     password: "0^^N!pot3ncE",
-    database = "omnichannel"
+    database: "omnichannel"
 });
 
 con.connect(function (err) {
