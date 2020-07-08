@@ -119,6 +119,8 @@ module.exports = class Receive {
             }
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
+        } else {
+            console.log(list);
         }
 
         return response;

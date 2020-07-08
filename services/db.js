@@ -47,7 +47,6 @@ module.exports = class DbService {
         let array = []
 
         for (var i = 0; i < result.length; i++) {
-            //console.log(result[i].category);
             array.push({ title: result[i], payload: result[i] });
         }
 
@@ -60,7 +59,6 @@ module.exports = class DbService {
 
         for (var i = 0; i < result.length; i++) {
             var t = result[i]
-            //console.log(t[Object.keys(t)[0]]);
             array.push(t[Object.keys(t)[0]]);
         }
 
