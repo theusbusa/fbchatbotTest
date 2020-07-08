@@ -13,24 +13,9 @@ var con = mysql.createConnection({
     database: "omnichannel"
 });
 
-//var array = []
-
 con.connect(function (err) {
     if (err) throw err;
     console.log("DATABASE CONNECTED!");
-
-    
-    con.query("SELECT DISTINCT category FROM Products", function (err, result, fields) {
-        if (err) throw err;
-
-        //for (var i = 0; i < result.length; i++) {
-        //    console.log(result[i].category);
-       //     array.push(result[i].category);
-        //}
-    });
-
-    console.log(array);
-
 });
 
 module.exports = class Receive {
@@ -134,6 +119,15 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
+            con.query("SELECT DISTINCT category FROM FAQs", function (err, result, fields) {
+                if (err) throw err;
+
+                for (var i = 0; i < result.length; i++) {
+                    console.log(result[i].category);
+                    //array.push(result[i].category);
+                }
+            });
+
             response = Response.genText("Please select from the following FAQs:")
         }
 
