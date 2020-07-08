@@ -113,15 +113,7 @@ module.exports = class Receive {
             console.log("HAYUF");
             console.log(result);
 
-            //result
-            //    .then(function (data) {
-            //        console.log("HAYUF");
-            //        console.log(data);
-            //        
-            //    })
-            //    .catch(err => console.log(err));
-
-            response = Response.genText("Please select from the following FAQs:")
+            response = Response.genQuickReply("Please select from the following FAQs:", result)
         }
 
         return response;
