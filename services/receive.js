@@ -14,7 +14,7 @@ module.exports = class Receive {
 
     // Check if the event is a message or postback and
     // call the appropriate handler function
-    async handleMessage() {
+    handleMessage() {
         let event = this.webhookEvent;
 
         let responses;
@@ -46,11 +46,11 @@ module.exports = class Receive {
         if (Array.isArray(responses)) {
             let delay = 0;
             for (let response of responses) {
-                await this.sendMessage(response, delay * 2000);
+                this.sendMessage(response, delay * 2000);
                 delay++;
             }
         } else {
-            await this.sendMessage(responses);
+            this.sendMessage(responses);
         }
     }
 
