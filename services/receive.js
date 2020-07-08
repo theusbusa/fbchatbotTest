@@ -14,7 +14,7 @@ module.exports = class Receive {
 
     // Check if the event is a message or postback and
     // call the appropriate handler function
-    handleMessage() {
+    async handleMessage() {
         let event = this.webhookEvent;
 
         let responses;
@@ -24,7 +24,7 @@ module.exports = class Receive {
                 let message = event.message;
 
                 if (message.quick_reply) {
-                    responses = this.handleQuickReply();
+                    responses = await this.handleQuickReply();
                 } else if (message.attachments) {
                     responses = this.handleAttachmentMessage();
                 } else if (message.text) {
@@ -90,11 +90,11 @@ module.exports = class Receive {
     }
 
     // Handles mesage events with quick replies
-    async handleQuickReply() {
+    handleQuickReply() {
         // Get the payload of the quick reply
         let payload = this.webhookEvent.message.quick_reply.payload;
 
-        return await this.handlePayload(payload);
+        return this.handlePayload(payload);
     }
 
     handlePayload(payload) {
@@ -105,7 +105,7 @@ module.exports = class Receive {
 
         // Set the response based on the payload
         if (payload === "shop") {
-            return Response.genText("What are you looking for?");
+            response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
@@ -115,12 +115,12 @@ module.exports = class Receive {
                 .then(function (data) {
                     console.log("HAYUF");
                     console.log(data);
-                    return Response.genText("Please select from the following FAQs:")
+                    response = Response.genText("Please select from the following FAQs:")
                 })
                 .catch(err => console.log(err));
         }
 
-        //return response;
+        return response;
     }
 
     sendMessage(response, delay = 0) {
