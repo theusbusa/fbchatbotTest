@@ -70,7 +70,6 @@ module.exports = class Receive {
 
         if (message === "hello" || message === "hi") {
             response = [
-                //Response.genText("Hi, " + this.user.firstName + "! What can we do to help you today?"),
                 Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
                     {
                         title: "Shop",
@@ -95,6 +94,8 @@ module.exports = class Receive {
             }
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
+        } else if (message === "shop") {
+            response = Response.genText("What are you looking for?");
         } else {
             response = Response.genText("I don't understand.");
         }
@@ -114,7 +115,10 @@ module.exports = class Receive {
         // Log CTA event in FBA
         GraphAPi.callFBAEventsAPI(this.user.psid, payload);
 
-        let response, list;
+        let response;
+
+        const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
+        console.log(categ);
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -123,7 +127,7 @@ module.exports = class Receive {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
             const r = await dbase.queryData(query);
-            list = await dbase.convertToList(r);
+            const list = await dbase.convertToList(r);
             const result = await dbase.keyboardButton(list);
             let temp = "\n\n";
 
