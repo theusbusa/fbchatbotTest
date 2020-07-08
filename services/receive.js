@@ -109,7 +109,7 @@ module.exports = class Receive {
         } else if (payload === "faqs") {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
-            categ = [];
+            var categ;
             const result = dbase.queryData(query);
 
             result
