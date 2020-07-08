@@ -101,7 +101,7 @@ module.exports = class Receive {
         // Log CTA event in FBA
         GraphAPi.callFBAEventsAPI(this.user.psid, payload);
 
-        let response;
+        let response, list;
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -110,7 +110,7 @@ module.exports = class Receive {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
             const r = await dbase.queryData(query);
-            const list = await dbase.convertToList(r);
+            list = await dbase.convertToList(r);
             const result = await dbase.keyboardButton(list);
             let temp = "\n\n";
 
