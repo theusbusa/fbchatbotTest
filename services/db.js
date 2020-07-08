@@ -26,17 +26,12 @@ module.exports = class DbService {
 
     async queryData(query) {
         try {
-            let array = []
             const response = await new Promise((resolve, reject) => {
                 con.query(query, (err, result) => {
                     if (err) reject(new Error(err.message));
-
-                    for (var i = 0; i < result.length; i++) {
-                        //console.log(result[i].category);
-                        array.push({ title: result[i].category, payload: result[i].category });
-                    }
-
-                    resolve(array);
+                    //const array = this.keyboardButton(result);
+                    
+                    resolve(result);
                 })
             });
 
@@ -44,6 +39,15 @@ module.exports = class DbService {
             return response;
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    keyboardButton(result) {
+        let array = []
+
+        for (var i = 0; i < result.length; i++) {
+            //console.log(result[i].category);
+            array.push({ title: result[i].category, payload: result[i].category });
         }
     }
 };

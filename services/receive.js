@@ -109,7 +109,8 @@ module.exports = class Receive {
         } else if (payload === "faqs") {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
-            const result = await dbase.queryData(query);
+            const r = await dbase.queryData(query);
+            const result = dbase.keyboardButton(r);
             let temp = "\n\n";
 
             for (var i = 0; i < result.length; i++) {
