@@ -25,6 +25,7 @@ module.exports = class DbService {
     }
 
     async queryData(query) {
+        console.log(query);
         try {
             const response = await new Promise((resolve, reject) => {
                 con.query(query, (err, result) => {
