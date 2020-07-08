@@ -42,12 +42,25 @@ module.exports = class DbService {
         }
     }
 
+    // Convert list to quick reply button format
     keyboardButton(result) {
         let array = []
 
         for (var i = 0; i < result.length; i++) {
             //console.log(result[i].category);
-            array.push({ title: result[i].category, payload: result[i].category });
+            array.push({ title: result[i], payload: result[i] });
+        }
+
+        return array;
+    }
+
+    // Convert query result to list
+    convertToList(result) {
+        let array = []
+
+        for (var i = 0; i < result.length; i++) {
+            console.log(result[i][0]);
+            array.push(result[i][0]);
         }
 
         return array;
