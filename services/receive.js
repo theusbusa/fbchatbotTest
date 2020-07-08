@@ -105,7 +105,7 @@ module.exports = class Receive {
 
         // Set the response based on the payload
         if (payload === "shop") {
-            response = Response.genText("What are you looking for?");
+            return Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
@@ -120,7 +120,7 @@ module.exports = class Receive {
                 .catch(err => console.log(err));
         }
 
-        return response;
+        //return response;
     }
 
     sendMessage(response, delay = 0) {
