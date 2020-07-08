@@ -125,9 +125,7 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
-            let query = "SELECT DISTINCT category FROM FAQs";
-            const r = await dbase.queryData(query);
-            const list = await dbase.convertToList(r);
+            const list = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
             const result = await dbase.keyboardButton(list);
             let temp = "\n\n";
 
@@ -136,8 +134,10 @@ module.exports = class Receive {
             }
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
+        } else if (categ.indexOf(payload) > -1) {
+            const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = " + payload));
+            console.log(list)
         } else {
-            console.log(list);
             response = Response.genText("I don't understand.");
         }
 
