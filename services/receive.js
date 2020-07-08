@@ -141,7 +141,7 @@ module.exports = class Receive {
 
             for (var i = 0; i < list.length; i++) {
                 choice.push(i + 1)
-                temp = temp + ((i + 1).toString() + ". " + list[i] + "\n");
+                temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
             }
 
             choice = await dbase.keyboardButton(choice, list);
