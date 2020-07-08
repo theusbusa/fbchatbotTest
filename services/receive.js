@@ -151,7 +151,7 @@ module.exports = class Receive {
 
             console.log(result[0].answers);
             console.log(result[0].imageURL);
-            response = [ Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL) ];
+            response = [ Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL, "PICTURE") ];
         } else {
             response = Response.genText("I don't understand.");
         }
