@@ -122,9 +122,11 @@ module.exports = class Receive {
             con.query("SELECT DISTINCT category FROM FAQs", function (err, result, fields) {
                 if (err) throw err;
 
+                var array = []
                 for (var i = 0; i < result.length; i++) {
-                    console.log(result[i].category);
-                    //array.push(result[i].category);
+                    //console.log(result[i].category);
+                    array.push({ title: result[i].category, payload: result[i].category });
+                    console.log(array)
                 }
             });
 
