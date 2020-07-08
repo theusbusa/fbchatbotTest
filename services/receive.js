@@ -150,9 +150,8 @@ module.exports = class Receive {
             const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + payload + "\"");
 
             console.log(result[0].answers);
-            response = Response.genText(result[0].answers);
             console.log(result[0].imageURL);
-            response = Response.genImageTemplate(result[0].imageURL);
+            response = [ Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL) ];
         } else {
             response = Response.genText("I don't understand.");
         }
