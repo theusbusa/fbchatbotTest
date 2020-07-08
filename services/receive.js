@@ -90,11 +90,11 @@ module.exports = class Receive {
     }
 
     // Handles mesage events with quick replies
-    handleQuickReply() {
+    async handleQuickReply() {
         // Get the payload of the quick reply
         let payload = this.webhookEvent.message.quick_reply.payload;
 
-        return this.handlePayload(payload);
+        return await this.handlePayload(payload);
     }
 
     handlePayload(payload) {
