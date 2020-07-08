@@ -107,21 +107,19 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
-            (async function () {
-                const dbase = db.getDbServiceInstance();
-                let query = "SELECT DISTINCT category FROM FAQs";
-                const result = await dbase.queryData(query);
-                console.log("HAYUF");
-                console.log(result);
+            const dbase = db.getDbServiceInstance();
+            let query = "SELECT DISTINCT category FROM FAQs";
+            let categ;
+            const result = dbase.queryData(query);
 
-                //result
-                //    .then(function (data) {
-                //        console.log("HAYUF");
-                //        console.log(data);
-                //    })
-                //    .catch(err => console.log(err));
-                response = Response.genText("Please select from the following FAQs:")
-            })()
+            result
+                .then(function (data) {
+                    categ = data;
+                })
+                .catch(err => console.log(err));
+            console.log("HAYUF");
+            console.log(categ);
+            response = Response.genText("Please select from the following FAQs:")
         }
 
         return response;
