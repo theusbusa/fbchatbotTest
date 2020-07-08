@@ -28,7 +28,7 @@ module.exports = class Receive {
                 } else if (message.attachments) {
                     responses = this.handleAttachmentMessage();
                 } else if (message.text) {
-                    responses = this.handleTextMessage();
+                    responses = await this.handleTextMessage();
                 }
             } else if (event.postback) {
                 responses = this.handlePostback();
@@ -55,7 +55,7 @@ module.exports = class Receive {
     }
 
     // Handles messages events with text
-    handleTextMessage() {
+    async handleTextMessage() {
         console.log(
             "Received text:",
             `${this.webhookEvent.message.text} for ${this.user.psid}`
@@ -82,6 +82,19 @@ module.exports = class Receive {
                     }
                 ])
             ];
+        } else if (message === "faqs" || message === "faq") {
+            const dbase = db.getDbServiceInstance();
+            let query = "SELECT DISTINCT category FROM FAQs";
+            const r = await dbase.queryData(query);
+            const list = await dbase.convertToList(r);
+            const result = await dbase.keyboardButton(list);
+            let temp = "\n\n";
+
+            for (var i = 0; i < result.length; i++) {
+                temp = temp + (result[i].title + "\n");
+            }
+
+            response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
         } else {
             response = Response.genText("I don't understand.");
         }
@@ -121,6 +134,7 @@ module.exports = class Receive {
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
         } else {
             console.log(list);
+            response = Response.genText("I don't understand.");
         }
 
         return response;
