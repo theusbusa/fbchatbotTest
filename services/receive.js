@@ -97,7 +97,7 @@ module.exports = class Receive {
         return this.handlePayload(payload);
     }
 
-    handlePayload(payload) {
+    async handlePayload(payload) {
         // Log CTA event in FBA
         GraphAPi.callFBAEventsAPI(this.user.psid, payload);
 
@@ -109,15 +109,19 @@ module.exports = class Receive {
         } else if (payload === "faqs") {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
-            const result = dbase.queryData(query);
+            const result = await dbase.queryData(query);
+            console.log("HAYUF");
+            console.log(result);
 
-            result
-                .then(function (data) {
-                    console.log("HAYUF");
-                    console.log(data);
-                    response = Response.genText("Please select from the following FAQs:")
-                })
-                .catch(err => console.log(err));
+            //result
+            //    .then(function (data) {
+            //        console.log("HAYUF");
+            //        console.log(data);
+            //        
+            //    })
+            //    .catch(err => console.log(err));
+
+            response = Response.genText("Please select from the following FAQs:")
         }
 
         return response;
