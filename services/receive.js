@@ -3,20 +3,8 @@
 const
     Response = require("./response"),
     GraphAPi = require("./graph-api"),
-    mysql = require("mysql"), // npm install mysql --save
+    db = require("./db"),
     i18n = require("../i18n.config");
-
-var con = mysql.createConnection({
-    host: "dev-db.cgy3xpod6h10.ap-southeast-1.rds.amazonaws.com",
-    user: "root",
-    password: "0^^N!pot3ncE",
-    database: "omnichannel"
-});
-
-con.connect(function (err) {
-    if (err) throw err;
-    console.log("DATABASE CONNECTED!");
-});
 
 module.exports = class Receive {
     constructor(user, webhookEvent) {
@@ -119,16 +107,9 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
-            let array = []
-            con.query("SELECT DISTINCT category FROM FAQs", function (err, result, fields) {
-                if (err) throw err;
-
-                for (var i = 0; i < result.length; i++) {
-                    //console.log(result[i].category);
-                    array.push({ title: result[i].category, payload: result[i].category });
-                }
-            });
-            console.log(array)
+            const dbase = db.getDbServiceInstance();
+            let query = "SELECT DISTINCT category FROM FAQs";
+            const result = dbase.queryData(query);
 
             response = Response.genText("Please select from the following FAQs:")
         }
