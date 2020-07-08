@@ -46,8 +46,10 @@ module.exports = class DbService {
         let array = []
 
         for (var i = 0; i < result.length; i++) {
-            console.log(result[i].category);
+            //console.log(result[i].category);
             array.push({ title: result[i].category, payload: result[i].category });
         }
+
+        return array;
     }
 };
