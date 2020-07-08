@@ -119,10 +119,10 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
+            var array = []
             con.query("SELECT DISTINCT category FROM FAQs", function (err, result, fields) {
                 if (err) throw err;
 
-                var array = []
                 for (var i = 0; i < result.length; i++) {
                     //console.log(result[i].category);
                     array.push({ title: result[i].category, payload: result[i].category });
