@@ -24,7 +24,7 @@ module.exports = class Receive {
                 let message = event.message;
 
                 if (message.quick_reply) {
-                    responses = await this.handleQuickReply();
+                    responses = this.handleQuickReply();
                 } else if (message.attachments) {
                     responses = this.handleAttachmentMessage();
                 } else if (message.text) {
@@ -46,11 +46,11 @@ module.exports = class Receive {
         if (Array.isArray(responses)) {
             let delay = 0;
             for (let response of responses) {
-                this.sendMessage(response, delay * 2000);
+                await this.sendMessage(response, delay * 2000);
                 delay++;
             }
         } else {
-            this.sendMessage(responses);
+            await this.sendMessage(responses);
         }
     }
 
