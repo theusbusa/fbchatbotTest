@@ -93,7 +93,7 @@ module.exports = class Receive {
                 temp = temp + (result[i].title + "\n");
             }
 
-            response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
+            response = Response.genQuickReply("Please select from the following FAQs:" + temp, result);
         } else if (message === "shop") {
             response = Response.genText("What are you looking for?");
         } else {
@@ -132,10 +132,19 @@ module.exports = class Receive {
                 temp = temp + (result[i].title + "\n");
             }
 
-            response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
+            response = Response.genQuickReply("Please select from the following top FAQs:" + temp, result);
         } else if (categ.indexOf(payload) > -1) {
             const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
-            console.log(list)
+            let temp = "\n\n";
+            let choice = [];
+
+            for (var i = 0; i < list.length; i++) {
+                choice.push(i+1)
+                temp = temp + ((i + 1).toString() + ". " + list[i] + "\n");
+            }
+
+            choice = await dbase.keyboardButton(choice);
+            response = Response.genQuickReply("Please select from the following FAQs:" + temp, choice);
         } else {
             response = Response.genText("I don't understand.");
         }
