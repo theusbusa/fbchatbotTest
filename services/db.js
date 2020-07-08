@@ -43,11 +43,16 @@ module.exports = class DbService {
     }
 
     // Convert list to quick reply button format
-    keyboardButton(result) {
+    keyboardButton(result, pl = null) {
         let array = []
 
         for (var i = 0; i < result.length; i++) {
-            array.push({ title: result[i], payload: result[i] });
+            if (pl === null) {
+                array.push({ title: result[i], payload: result[i] });
+            } else {
+                array.push({ title: result[i], payload: pl[i] });
+            }
+            
         }
 
         return array;

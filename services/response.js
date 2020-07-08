@@ -41,7 +41,7 @@ module.exports = class Response {
         return response;
     }
 
-    static genImageTemplate(image_url, title, subtitle = "") {
+    static genImageTemplate(image_url, title = "", subtitle = "") {
         let response = {
             attachment: {
                 type: "template",

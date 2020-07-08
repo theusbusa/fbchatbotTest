@@ -119,6 +119,7 @@ module.exports = class Receive {
 
         const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
+        const articles = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT articles FROM FAQs"));
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -139,12 +140,19 @@ module.exports = class Receive {
             let choice = [];
 
             for (var i = 0; i < list.length; i++) {
-                choice.push(i+1)
+                choice.push(i + 1)
                 temp = temp + ((i + 1).toString() + ". " + list[i] + "\n");
             }
 
-            choice = await dbase.keyboardButton(choice);
+            choice = await dbase.keyboardButton(choice, list);
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, choice);
+        } else if (articles.indexOf(payload) > -1) {
+            const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + payload + "\"");
+
+            console.log(result[0].answers);
+            response = Response.genText(result[0].answers);
+            console.log(result[0].imageURL);
+            response = Response.genImageTemplate(result[0].imageURL);
         } else {
             response = Response.genText("I don't understand.");
         }
