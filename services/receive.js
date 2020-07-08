@@ -119,7 +119,6 @@ module.exports = class Receive {
 
         const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
-        console.log(categ);
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -135,7 +134,7 @@ module.exports = class Receive {
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result)
         } else if (categ.indexOf(payload) > -1) {
-            const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = " + payload));
+            const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
             console.log(list)
         } else {
             response = Response.genText("I don't understand.");
