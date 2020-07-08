@@ -117,6 +117,7 @@ module.exports = class Receive {
 
         let response;
 
+        const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
         console.log(categ);
 
@@ -124,7 +125,6 @@ module.exports = class Receive {
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
         } else if (payload === "faqs") {
-            const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
             const r = await dbase.queryData(query);
             const list = await dbase.convertToList(r);
