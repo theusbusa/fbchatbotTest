@@ -110,8 +110,10 @@ module.exports = class Receive {
             const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
             const result = await dbase.queryData(query);
-            console.log("HAYUF");
-            console.log(result);
+
+            for (var i = 0; i < result.length; i++) {
+                console.log(result[i].title);
+            }
 
             response = Response.genQuickReply("Please select from the following FAQs:", result)
         }
