@@ -41,7 +41,7 @@ module.exports = class DbService {
             });
 
             //console.log(response);
-            return response;
+            return await response;
         } catch (error) {
             console.log(error);
         }
