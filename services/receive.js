@@ -95,8 +95,6 @@ module.exports = class Receive {
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result);
         } else if (message === "shop") {
-            response = Response.genText("What are you looking for?");
-
             element = [
                 {
                     title: "Tops",
@@ -133,6 +131,8 @@ module.exports = class Receive {
                     ]
                 }
             ];
+
+            response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
         } else {
             response = Response.genText("I don't understand.");
         }
