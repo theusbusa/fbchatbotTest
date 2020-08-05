@@ -72,12 +72,19 @@ module.exports = class DbService {
 
     mediaArray(result) {
         let array = []
-        console.log(Object.keys(result[0]).length)
 
-        for (var i = 0; i < result.length; i++) {
-            var t = result[i]
-            array.push({ title: t[Object.keys(t)[0]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }] });
+        if (Object.keys(result[0]).length === 3) {
+            for (var i = 0; i < result.length; i++) {
+                var t = result[i]
+                array.push({ title: t[Object.keys(t)[0]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }] });
+            }
+        } else if (Object.keys(result[0]).length === 4) {
+            for (var i = 0; i < result.length; i++) {
+                var t = result[i]
+                array.push({ title: t[Object.keys(t)[0]], subtitle: "Price: PHP" + t[Object.keys(t)[1]], image_url: t[Object.keys(t)[2]], buttons: [{ type: "web_url", title: "Order Here", url: t[Object.keys(t)[3]] }] });
+            }
         }
+        
 
         console.log(array)
         return array;

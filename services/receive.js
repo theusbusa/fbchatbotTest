@@ -161,7 +161,6 @@ module.exports = class Receive {
         const productCateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", category, gender) FROM Products"));
         const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", subcategory, gender) FROM Products"));
 
-        console.log(productCateg)
         // Set the response based on the payload
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
@@ -206,7 +205,7 @@ module.exports = class Receive {
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
             const element = await dbase.mediaArray(result);
 
-            //response = Response.genImageTemplate2(element);
+            response = Response.genImageTemplate2(element);
         } else {
             response = Response.genText("I don't understand.")
         }
