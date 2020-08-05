@@ -195,12 +195,12 @@ module.exports = class Receive {
         } else if (productCateg.indexOf(payload) > -1) {
             const categ = payload.split("_")[0];
             const gender = payload.split("_")[1];
-            const result = await dbase.queryData("SELECT subcategory, imageURL FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
-            console.log(result)
+            const result = await dbase.queryData("SELECT subcategory, imageURL, gender FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
+            const element = await dbase.mediaArray(result);
 
             //console.log(result[0].answers);
             //console.log(result[0].imageURL);
-            //response = [Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL)];
+            response = Response.genImageTemplate2(element);
             //console.log(response);
         } else {
             response = Response.genText("I don't understand.")
