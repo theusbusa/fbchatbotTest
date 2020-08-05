@@ -102,14 +102,14 @@ module.exports = class Receive {
                     image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p1.jpg",
                     "buttons": [
                         {
-                            "type": "postback",
-                            "title": "Men",
-                            "payload": "tops_men"
+                            type: "postback",
+                            title: "Men",
+                            payload: "tops_men"
                         },
                         {
-                            "type": "postback",
-                            "title": "Women",
-                            "payload": "tops_women"
+                            type: "postback",
+                            title: "Women",
+                            payload: "tops_women"
                         }
                     ]
                 },
@@ -119,20 +119,21 @@ module.exports = class Receive {
                     image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p17.PNG",
                     "buttons": [
                         {
-                            "type": "postback",
-                            "title": "Men",
-                            "payload": "tops_men"
+                            type: "postback",
+                            title: "Men",
+                            payload: "tops_men"
                         },
                         {
-                            "type": "postback",
-                            "title": "Women",
-                            "payload": "tops_women"
+                            type: "postback",
+                            title: "Women",
+                            payload: "tops_women"
                         }
                     ]
                 }
             ];
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
+            console.log(reposnse);
         } else {
             response = Response.genText("I don't understand.");
         }
