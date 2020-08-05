@@ -75,8 +75,7 @@ module.exports = class DbService {
 
         for (var i = 0; i < result.length; i++) {
             var t = result[i]
-            { title: t[Object.keys(t)[0]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }] }
-            array.push(t[Object.keys(t)[0]]);
+            array.push({ title: t[Object.keys(t)[0]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }] });
         }
 
         console.log(array)
