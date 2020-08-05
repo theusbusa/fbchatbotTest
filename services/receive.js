@@ -209,7 +209,7 @@ module.exports = class Receive {
     }
 
     // Handles postbacks events
-    handlePostback() {
+    async handlePostback() {
         let postback = this.webhookEvent.postback;
         // Check for the special Get Starded with referral
         let payload;
