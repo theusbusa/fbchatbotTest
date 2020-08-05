@@ -133,7 +133,6 @@ module.exports = class Receive {
             ];
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
-            console.log(reposnse);
         } else {
             response = Response.genText("I don't understand.");
         }
