@@ -104,12 +104,12 @@ module.exports = class Receive {
                         {
                             type: "postback",
                             title: "Men",
-                            payload: "tops_men"
+                            payload: "Top_Men"
                         },
                         {
                             type: "postback",
                             title: "Women",
-                            payload: "tops_women"
+                            payload: "Top_Women"
                         }
                     ]
                 },
@@ -121,12 +121,12 @@ module.exports = class Receive {
                         {
                             type: "postback",
                             title: "Men",
-                            payload: "bottoms_men"
+                            payload: "Bottoms_Men"
                         },
                         {
                             type: "postback",
                             title: "Women",
-                            payload: "bottoms_women"
+                            payload: "Bottoms_Women"
                         }
                     ]
                 }
@@ -158,7 +158,8 @@ module.exports = class Receive {
         const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
         const articles = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT articles FROM FAQs"));
-        const productCateg = ["tops_men", "tops_women", "bottoms_men", "bottoms_women"]
+        const productCateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", category, gender) FROM Products"));
+        const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", subcategory, gender) FROM Products"));
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -191,17 +192,20 @@ module.exports = class Receive {
             console.log(result[0].answers);
             console.log(result[0].imageURL);
             response = [Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL)];
-            console.log(response);
         } else if (productCateg.indexOf(payload) > -1) {
             const categ = payload.split("_")[0];
             const gender = payload.split("_")[1];
             const result = await dbase.queryData("SELECT subcategory, imageURL, gender FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
             const element = await dbase.mediaArray(result);
 
-            //console.log(result[0].answers);
-            //console.log(result[0].imageURL);
             response = Response.genImageTemplate2(element);
-            //console.log(response);
+        } else if (productSubcateg.indexOf(payload) > -1) {
+            const subcateg = payload.split("_")[0];
+            const gender = payload.split("_")[1];
+            const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
+            const element = await dbase.mediaArray(result);
+
+            //response = Response.genImageTemplate2(element);
         } else {
             response = Response.genText("I don't understand.")
         }

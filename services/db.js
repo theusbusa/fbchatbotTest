@@ -72,6 +72,7 @@ module.exports = class DbService {
 
     mediaArray(result) {
         let array = []
+        console.log(Object.keys(result[0].length))
 
         for (var i = 0; i < result.length; i++) {
             var t = result[i]
