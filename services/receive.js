@@ -161,6 +161,7 @@ module.exports = class Receive {
         const productCateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", category, gender) FROM Products"));
         const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", subcategory, gender) FROM Products"));
 
+        console.log(productCateg)
         // Set the response based on the payload
         if (payload === "shop") {
             response = Response.genText("What are you looking for?");
