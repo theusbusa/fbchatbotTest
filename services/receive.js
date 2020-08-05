@@ -121,12 +121,12 @@ module.exports = class Receive {
                         {
                             type: "postback",
                             title: "Men",
-                            payload: "tops_men"
+                            payload: "bottoms_men"
                         },
                         {
                             type: "postback",
                             title: "Women",
-                            payload: "tops_women"
+                            payload: "bottoms_women"
                         }
                     ]
                 }
@@ -157,6 +157,7 @@ module.exports = class Receive {
         const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
         const articles = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT articles FROM FAQs"));
+        const productCateg = ["tops_men", "tops_women", "bottoms_men", "bottoms_women"]
 
         // Set the response based on the payload
         if (payload === "shop") {
@@ -190,11 +191,35 @@ module.exports = class Receive {
             console.log(result[0].imageURL);
             response = [Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL)];
             console.log(response);
+        } else if (productCateg.indexOf(payload) > -1) {
+            const categ = payload.split("_")[0];
+            const gender = payload.split("_")[1];
+            const result = await dbase.queryData("SELECT subcategory, imageURL FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
+            console.log(result)
+
+            //console.log(result[0].answers);
+            //console.log(result[0].imageURL);
+            //response = [Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL)];
+            //console.log(response);
         } else {
             response = Response.genText("I don't understand.")
         }
 
         return response;
+    }
+
+    // Handles postbacks events
+    handlePostback() {
+        let postback = this.webhookEvent.postback;
+        // Check for the special Get Starded with referral
+        let payload;
+        if (postback.referral && postback.referral.type == "OPEN_THREAD") {
+            payload = postback.referral.ref;
+        } else {
+            // Get the payload of the postback
+            payload = postback.payload;
+        }
+        return this.handlePayload(payload.toUpperCase());
     }
 
     sendMessage(response, delay = 0) {
