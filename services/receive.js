@@ -203,6 +203,7 @@ module.exports = class Receive {
             const subcateg = payload.split("_")[0];
             const gender = payload.split("_")[1];
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
+            console.log(results)
             const element = await dbase.mediaArray(result);
 
             response = Response.genImageTemplate2(element);
