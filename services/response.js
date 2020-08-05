@@ -54,6 +54,31 @@ module.exports = class Response {
         return response;
     }
 
+    static genImageTemplate2(image_url, title, subtitle = "") {
+        let response = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: title,
+                            subtitle: subtitle,
+                            image_url: image_url
+                        },
+                        {
+                            title: "sample",
+                            subtitle: subtitle,
+                            image_url: "https://rtl-eaglei.s3-ap-southeast-1.amazonaws.com/Images/20200707_145921_10_01.png"
+                        }
+                    ]
+                }
+            }
+        };
+
+        return response;
+    }
+
     static genButtonTemplate(title, buttons) {
         let response = {
             attachment: {
