@@ -154,6 +154,7 @@ module.exports = class Receive {
 
         let response;
 
+        console.log(payload)
         const dbase = db.getDbServiceInstance();
         const categ = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
         const articles = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT articles FROM FAQs"));
@@ -219,7 +220,7 @@ module.exports = class Receive {
             // Get the payload of the postback
             payload = postback.payload;
         }
-        return await this.handlePayload(payload.toUpperCase());
+        return await this.handlePayload(payload);
     }
 
     sendMessage(response, delay = 0) {
