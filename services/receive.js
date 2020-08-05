@@ -202,7 +202,7 @@ module.exports = class Receive {
         } else if (productSubcateg.indexOf(payload) > -1) {
             const subcateg = payload.split("_")[0];
             const gender = payload.split("_")[1];
-            const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
+            const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
             console.log(result)
             const element = await dbase.mediaArray(result);
 
