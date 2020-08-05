@@ -65,7 +65,7 @@ module.exports = class Response {
             }
         };
 
-        console.log(reposnse);
+        console.log(response);
         return response;
     }
 
