@@ -96,6 +96,43 @@ module.exports = class Receive {
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result);
         } else if (message === "shop") {
             response = Response.genText("What are you looking for?");
+
+            element = [
+                {
+                    title: "Tops",
+                    subtitle: "",
+                    image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p1.jpg",
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Men",
+                            "payload": "tops_men"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Women",
+                            "payload": "tops_women"
+                        }
+                    ]
+                },
+                {
+                    title: "Bottoms",
+                    subtitle: "",
+                    image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p17.PNG",
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Men",
+                            "payload": "tops_men"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Women",
+                            "payload": "tops_women"
+                        }
+                    ]
+                }
+            ];
         } else {
             response = Response.genText("I don't understand.");
         }
@@ -151,7 +188,7 @@ module.exports = class Receive {
 
             console.log(result[0].answers);
             console.log(result[0].imageURL);
-            response = [Response.genText(result[0].answers), Response.genImageTemplate2(result[0].imageURL, "hey")];
+            response = [Response.genText(result[0].answers), Response.genImageTemplate(result[0].imageURL)];
             console.log(response);
         } else {
             response = Response.genText("I don't understand.")
