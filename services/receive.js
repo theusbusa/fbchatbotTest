@@ -219,7 +219,7 @@ module.exports = class Receive {
             // Get the payload of the postback
             payload = postback.payload;
         }
-        return this.handlePayload(payload.toUpperCase());
+        return await this.handlePayload(payload.toUpperCase());
     }
 
     sendMessage(response, delay = 0) {
