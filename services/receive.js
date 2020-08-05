@@ -31,7 +31,7 @@ module.exports = class Receive {
                     responses = await this.handleTextMessage();
                 }
             } else if (event.postback) {
-                responses = this.handlePostback();
+                responses = await this.handlePostback();
             } else if (event.referral) {
                 responses = this.handleReferral();
             }
