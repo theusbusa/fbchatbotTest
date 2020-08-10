@@ -103,6 +103,13 @@ module.exports = class Receive {
             const element = await dbase.mediaArray(result);
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
+        } else if (message.match(new RegExp(productCateg.join('|'), 'g')) !== null && message.match(new RegExp(["men", "women"].join('|'), 'g')) !== null) {
+            const categ = message.match(new RegExp(productCateg.join('|'), 'g'))[0].toLowerCase();
+            const gender = message.match(new RegExp(["men", "women"].join('|'), 'g'))[0].toLowerCase();
+            const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products WHERE category = \"" + categ + "\" AND gender = \" " + gender + "\" GROUP BY category, gender");
+            const element = await dbase.mediaArray(result);
+
+            response = Response.genImageTemplate2(element);
         } else if (message.match(new RegExp(productCateg.join('|'), 'g')) !== null) {
             const categ = message.match(new RegExp(productCateg.join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products WHERE category = \"" + categ + "\" GROUP BY category, gender");
