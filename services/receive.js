@@ -100,14 +100,14 @@ module.exports = class Receive {
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result);
         } else if (message === "shop") {
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, message);
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
         } else if (message.match(new RegExp(productCateg.join('|'), 'g')) !== null && message.match(new RegExp(["men", "women"].join('|'), 'g')) !== null) {
             const categ = message.match(new RegExp(productCateg.join('|'), 'g'))[0].toLowerCase();
             const gender = message.match(new RegExp(["men", "women"].join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT subcategory, imageURL, gender FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory, gender");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, message);
 
             response = Response.genImageTemplate2(element);
         } else if (message.match(new RegExp(productSubcateg.join('|'), 'g')) !== null && message.match(new RegExp(["men", "women"].join('|'), 'g')) !== null) {
@@ -116,7 +116,7 @@ module.exports = class Receive {
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
 
             if (result.length !== 0) {
-                const element = await dbase.mediaArray(result);
+                const element = await dbase.mediaArray(result, message);
                 response = Response.genImageTemplate2(element);
             } else {
                 response = Response.genText("Sorry, we don't have that kind of item.");
@@ -125,7 +125,7 @@ module.exports = class Receive {
         } else if (message.match(new RegExp(productCateg.join('|'), 'g')) !== null) {
             const categ = message.match(new RegExp(productCateg.join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products WHERE category = \"" + categ + "\" GROUP BY category, gender");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, message);
 
             response = Response.genImageTemplate2(element);
         } else {
@@ -172,7 +172,7 @@ module.exports = class Receive {
             ];
         } else if(payload === "shop") {
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, payload);
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
         } else if (payload === "faqs") {
@@ -207,14 +207,14 @@ module.exports = class Receive {
             const categ = payload.split("_")[0];
             const gender = payload.split("_")[1];
             const result = await dbase.queryData("SELECT subcategory, imageURL, gender FROM Products WHERE category = \"" + categ + "\" AND gender = \"" + gender + "\" GROUP BY subcategory");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, payload);
 
             response = Response.genImageTemplate2(element);
         } else if (productSubcateg.indexOf(payload) > -1) {
             const subcateg = payload.split("_")[0];
             const gender = payload.split("_")[1];
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
-            const element = await dbase.mediaArray(result);
+            const element = await dbase.mediaArray(result, payload);
 
             response = Response.genImageTemplate2(element);
         } else {
