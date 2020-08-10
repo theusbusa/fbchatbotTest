@@ -157,7 +157,20 @@ module.exports = class Receive {
         const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT CONCAT_WS(\"_\", subcategory, gender) FROM Products"));
 
         // Set the response based on the payload
-        if (payload === "shop") {
+        if (payload === "hello" || payload === "hi") {
+            response = [
+                Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
+                    {
+                        title: "Shop",
+                        payload: "shop"
+                    },
+                    {
+                        title: "FAQs",
+                        payload: "faqs"
+                    }
+                ])
+            ];
+        } else if(payload === "shop") {
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
             const element = await dbase.mediaArray(result);
 
