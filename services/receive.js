@@ -69,8 +69,8 @@ module.exports = class Receive {
         let response;
 
         const dbase = db.getDbServiceInstance();
-        const productCateg = await dbase.convertToList(await dbase.queryData("SELECT category, lower(category), upper(category) FROM Products GROUP BY category")).map(v => v.toLowerCase());
-        const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT subcategory, lower(subcategory), upper(subcategory) FROM Products GROUP BY category")).map(v => v.toLowerCase());
+        const productCateg = await dbase.convertToList(await dbase.queryData("SELECT category FROM Products GROUP BY category")).map(v => v.toLowerCase());
+        const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT subcategory FROM Products GROUP BY subcategory")).map(v => v.toLowerCase());
         console.log(productSubcateg)
 
         if (message === "hello" || message === "hi") {
@@ -114,6 +114,7 @@ module.exports = class Receive {
             const subcateg = message.match(new RegExp(productSubcateg.join('|'), 'g'))[0].toLowerCase();
             const gender = message.match(new RegExp(["men", "women"].join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
+            console.log(result)
             const element = await dbase.mediaArray(result);
 
             response = Response.genImageTemplate2(element);
