@@ -68,6 +68,8 @@ module.exports = class Receive {
 
         let response;
 
+        const dbase = db.getDbServiceInstance();
+
         if (message === "hello" || message === "hi") {
             response = [
                 Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
@@ -82,7 +84,6 @@ module.exports = class Receive {
                 ])
             ];
         } else if (message === "faqs" || message === "faq") {
-            const dbase = db.getDbServiceInstance();
             let query = "SELECT DISTINCT category FROM FAQs";
             const r = await dbase.queryData(query);
             const list = await dbase.convertToList(r);
@@ -163,7 +164,10 @@ module.exports = class Receive {
 
         // Set the response based on the payload
         if (payload === "shop") {
-            response = Response.genText("What are you looking for?");
+            const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
+            const element = await dbase.mediaArray(result);
+
+            response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
         } else if (payload === "faqs") {
             const list = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
             const result = await dbase.keyboardButton(list);
@@ -203,7 +207,6 @@ module.exports = class Receive {
             const subcateg = payload.split("_")[0];
             const gender = payload.split("_")[1];
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
-            console.log(result)
             const element = await dbase.mediaArray(result);
 
             response = Response.genImageTemplate2(element);
