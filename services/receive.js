@@ -70,8 +70,8 @@ module.exports = class Receive {
 
         const dbase = db.getDbServiceInstance();
         const productCateg = await dbase.convertToList(await dbase.queryData("SELECT category, lower(category), upper(category) FROM Products GROUP BY category")).map(v => v.toLowerCase());
-        console.log(productCateg)
         const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT subcategory, lower(subcategory), upper(subcategory) FROM Products GROUP BY category")).map(v => v.toLowerCase());
+        console.log(productSubcateg)
 
         if (message === "hello" || message === "hi") {
             response = [
