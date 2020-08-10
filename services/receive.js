@@ -114,10 +114,14 @@ module.exports = class Receive {
             const subcateg = message.match(new RegExp(productSubcateg.join('|'), 'g'))[0].toLowerCase();
             const gender = message.match(new RegExp(["men", "women"].join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT productName, price, imageURL, productURL FROM Products WHERE subcategory = \"" + subcateg + "\" AND gender = \"" + gender + "\"");
-            console.log(result)
-            const element = await dbase.mediaArray(result);
 
-            response = Response.genImageTemplate2(element);
+            if (result.length !== 0) {
+                const element = await dbase.mediaArray(result);
+                response = Response.genImageTemplate2(element);
+            } else {
+                response = Response.genText("Sorry, we don't have that kind of item.");
+            }
+            
         } else if (message.match(new RegExp(productCateg.join('|'), 'g')) !== null) {
             const categ = message.match(new RegExp(productCateg.join('|'), 'g'))[0].toLowerCase();
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products WHERE category = \"" + categ + "\" GROUP BY category, gender");
