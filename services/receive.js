@@ -96,42 +96,8 @@ module.exports = class Receive {
 
             response = Response.genQuickReply("Please select from the following FAQs:" + temp, result);
         } else if (message === "shop") {
-            let element = [
-                {
-                    title: "Tops",
-                    subtitle: "",
-                    image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p1.jpg",
-                    "buttons": [
-                        {
-                            type: "postback",
-                            title: "Men",
-                            payload: "Top_Men"
-                        },
-                        {
-                            type: "postback",
-                            title: "Women",
-                            payload: "Top_Women"
-                        }
-                    ]
-                },
-                {
-                    title: "Bottoms",
-                    subtitle: "",
-                    image_url: "https://rtl-omnichannel.s3-ap-southeast-1.amazonaws.com/imagepenshoppe/p17.PNG",
-                    "buttons": [
-                        {
-                            type: "postback",
-                            title: "Men",
-                            payload: "Bottoms_Men"
-                        },
-                        {
-                            type: "postback",
-                            title: "Women",
-                            payload: "Bottoms_Women"
-                        }
-                    ]
-                }
-            ];
+            const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
+            const element = await dbase.mediaArray(result);
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
         } else {
