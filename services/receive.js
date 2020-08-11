@@ -233,6 +233,7 @@ module.exports = class Receive {
                     let temp = "\n\n";
                     let choice = [];
 
+                    console.log(list);
                     for (var i = 0; i < list.length; i++) {
                         choice.push(i + 1)
                         temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
