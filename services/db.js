@@ -78,7 +78,7 @@ module.exports = class DbService {
                 var t = result[i]
 
                 if (payload === "shop") {
-                    array.push({ title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }, { type: "postback", title: "Back to Menu", payload: "hi" }] });
+                    array.push({ title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }, { type: "postback", title: "Back to Main Menu", payload: "hi" }] });
                 } else {
                     array.push({ title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], subtitle: "", image_url: t[Object.keys(t)[1]], buttons: [{ type: "postback", title: t[Object.keys(t)[0]] + " for " + t[Object.keys(t)[2]], payload: t[Object.keys(t)[0]] + "_" + t[Object.keys(t)[2]] }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }] });
                 }
@@ -86,12 +86,22 @@ module.exports = class DbService {
         } else if (Object.keys(result[0]).length === 4) {
             for (var i = 0; i < result.length; i++) {
                 var t = result[i]
-                array.push({ title: t[Object.keys(t)[0]], subtitle: "PHP" + t[Object.keys(t)[1]], image_url: t[Object.keys(t)[2]], buttons: [{ type: "web_url", title: "Order Here", url: t[Object.keys(t)[3]] }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }] });
+                array.push({ title: t[Object.keys(t)[0]], subtitle: "PHP" + t[Object.keys(t)[1]], image_url: t[Object.keys(t)[2]], buttons: [{ type: "web_url", title: "Order Here", url: t[Object.keys(t)[3]] }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Main Menu", payload: "hi" }] });
             }
         }
         
 
         console.log(array)
         return array;
+    }
+
+    convertToJSON(result) {
+        let j = {}
+
+        for (var i = 0; i < result.length; i++) {
+            j[i + 1] = result[i];
+        }
+
+        return j;
     }
 };

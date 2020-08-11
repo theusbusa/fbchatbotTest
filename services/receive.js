@@ -6,6 +6,8 @@ const
     db = require("./db"),
     i18n = require("../i18n.config");
 
+var faqs = {};
+
 module.exports = class Receive {
     constructor(user, webhookEvent) {
         this.user = user;
@@ -170,7 +172,7 @@ module.exports = class Receive {
                     }
                 ])
             ];
-        } else if(payload === "shop") {
+        } else if (payload === "shop") {
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
             const element = await dbase.mediaArray(result, payload);
 
@@ -187,16 +189,43 @@ module.exports = class Receive {
             response = Response.genQuickReply("Please select from the following top FAQs:" + temp, result);
         } else if (categ.indexOf(payload) > -1) {
             const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
+            const conv = await dbase.convertToJSON(list);
+            faqs[this.user.psid] = conv;
             let temp = "\n\n";
             let choice = [];
 
-            for (var i = 0; i < list.length; i++) {
+            for (var i = 0; i < 4; i++) {
                 choice.push(i + 1)
-                temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
+                temp = temp + ((i + 1).toString() + ". " + faqs[this.user.psid][i + 1].replace(/\n$/, '') + "\n");
+                delete test[id][i + 1];
             }
 
             choice = await dbase.keyboardButton(choice, list);
-            response = Response.genQuickReply("Please select from the following FAQs:" + temp, choice);
+            response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
+        } else if (payload === "more") {
+            if (this.user.psid in faqs) {
+                if (Object.keys(faqs[this.user.psid]).length !== 0) {
+                    const init = Number(Object.keys(faqs[this.user.psid])[0]);
+                    const len = Object.keys(faqs[this.user.psid]).length;
+                    let temp = "\n\n";
+                    let choice = [];
+
+                    for (var i = 0; i < len; i++) {
+                        if (i === 4) break;
+
+                        choice.push(i + init)
+                        temp = temp + ((i + init).toString() + ". " + faqs[this.user.psid][i + init].replace(/\n$/, '') + "\n");
+                        delete test[id][i + init];
+                    }
+
+                    choice = await dbase.keyboardButton(choice, list);
+                    response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
+                } else {
+
+
+                    delete faqs[this.user.psid];
+                }
+            }
         } else if (articles.indexOf(payload) > -1) {
             const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + payload + "\"");
 
