@@ -238,9 +238,11 @@ module.exports = class Receive {
                         temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
                     }
 
+                    choice = choice.concat(["Back to FAQ Menu", "Back to Main Menu"]);
+                    list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2({ title: "or ", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] })];
+                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2([{ title: "or ", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
