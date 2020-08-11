@@ -131,7 +131,16 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genText("I don't understand.");
+            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
+                {
+                    title: "Shop",
+                    payload: "shop"
+                },
+                {
+                    title: "FAQs",
+                    payload: "faqs"
+                }
+            ]);
         }
 
         return response;
@@ -252,7 +261,7 @@ module.exports = class Receive {
             const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + payload + "\"");
 
             let choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
-            response = [Response.genQuickReply(result[0].answers, choice), Response.genImageTemplate(result[0].imageURL)];
+            response = [Response.genImageTemplate(result[0].imageURL), Response.genQuickReply(result[0].answers, choice)];
         } else if (productCateg.indexOf(payload) > -1) {
             const categ = payload.split("_")[0];
             const gender = payload.split("_")[1];
@@ -268,7 +277,16 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genText("I don't understand.")
+            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
+                {
+                    title: "Shop",
+                    payload: "shop"
+                },
+                {
+                    title: "FAQs",
+                    payload: "faqs"
+                }
+            ]);
         }
 
         return response;
