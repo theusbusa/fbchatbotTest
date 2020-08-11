@@ -73,7 +73,7 @@ module.exports = class Receive {
         const dbase = db.getDbServiceInstance();
         const productCateg = await dbase.convertToList(await dbase.queryData("SELECT category FROM Products GROUP BY category")).map(v => v.toLowerCase());
         const productSubcateg = await dbase.convertToList(await dbase.queryData("SELECT subcategory FROM Products GROUP BY subcategory")).map(v => v.toLowerCase());
-        console.log(productSubcateg)
+        const words = ["how", "can", "what", "where", "why", "order", "pay", "cancel", "credit", "debit", "card", "deliver", "ship", "item", "return"];
 
         if (message === "hello" || message === "hi") {
             response = [
@@ -137,16 +137,41 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                {
-                    title: "Shop",
-                    payload: "shop"
-                },
-                {
-                    title: "FAQs",
-                    payload: "faqs"
+            if (message.match(new RegExp(words.join('|'), 'g')) !== null) {
+                var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE artcles REGEXP \"" + message.match(new RegExp(words.join('|'), 'g')).join('|') + "\""));
+                const conv = await dbase.convertToJSON(list);
+                faqs[this.user.psid] = conv;
+                let temp = "\n\n";
+                let choice = [];
+                list = [];
+                const len = Object.keys(faqs[this.user.psid]).length;
+
+                for (var i = 0; i < len; i++) {
+                    if (i === 4) break;
+
+                    choice.push(i + 1)
+                    list.push(faqs[this.user.psid][i + 1])
+                    temp = temp + ((i + 1).toString() + ". " + faqs[this.user.psid][i + 1].replace(/\n$/, '') + "\n");
+                    delete faqs[this.user.psid][i + 1];
                 }
-            ]);
+
+                choice = choice.concat(["More", "Back to FAQ Menu", "Back to Main Menu"]);
+                list = list.concat(["more", "faqs", "hi"]);
+                choice = await dbase.keyboardButton(choice, list);
+                response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
+            } else {
+                response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
+                    {
+                        title: "Shop",
+                        payload: "shop"
+                    },
+                    {
+                        title: "FAQs",
+                        payload: "faqs"
+                    }
+                ]);
+            }
+            
         }
 
         return response;
