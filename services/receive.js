@@ -139,7 +139,7 @@ module.exports = class Receive {
         } else if (/^\d+$/.test(message)) {
             if (this.user.psid in faqs) {
                 const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + faqs[this.user.psid][message] + "\"");
-                console.log(faqs[this.user.psid][message]);
+                console.log(faqs[this.user.psid]);
                 let choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
                 response = [Response.genImageTemplate(result[0].imageURL), Response.genQuickReply(result[0].answers, choice)];
             } else {
@@ -153,9 +153,7 @@ module.exports = class Receive {
                         payload: "faqs"
                     }
                 ]);
-            }
-
-            response = Response.genImageTemplate2(element);
+            }           
         } else {
             if (message.match(new RegExp(words.join('|'), 'g')) !== null) {
                 var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE articles REGEXP \"" + message.match(new RegExp(words.join('|'), 'g')).join('|') + "\""));
