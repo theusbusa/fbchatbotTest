@@ -137,16 +137,7 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                {
-                    title: "Shop",
-                    payload: "shop"
-                },
-                {
-                    title: "FAQs",
-                    payload: "faqs"
-                }
-            ]);
+            response = Response.genText("I don't understand.")
         }
 
         return response;
@@ -283,16 +274,7 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                {
-                    title: "Shop",
-                    payload: "shop"
-                },
-                {
-                    title: "FAQs",
-                    payload: "faqs"
-                }
-            ]);
+            response = Response.genText("I don't understand.")
         }
 
         return response;
