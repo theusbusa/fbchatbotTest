@@ -136,6 +136,26 @@ module.exports = class Receive {
             const element = await dbase.mediaArray(result, message);
 
             response = Response.genImageTemplate2(element);
+        } else if (/^\d+$/.test(message)) {
+            if (this.user.psid in faqs) {
+                const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + faqs[this.user.psid][Number(message)] + "\"");
+
+                let choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
+                response = [Response.genImageTemplate(result[0].imageURL), Response.genQuickReply(result[0].answers, choice)];
+            } else {
+                response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
+                    {
+                        title: "Shop",
+                        payload: "shop"
+                    },
+                    {
+                        title: "FAQs",
+                        payload: "faqs"
+                    }
+                ]);
+            }
+
+            response = Response.genImageTemplate2(element);
         } else {
             if (message.match(new RegExp(words.join('|'), 'g')) !== null) {
                 var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE articles REGEXP \"" + message.match(new RegExp(words.join('|'), 'g')).join('|') + "\""));
