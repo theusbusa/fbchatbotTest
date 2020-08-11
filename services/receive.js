@@ -130,6 +130,12 @@ module.exports = class Receive {
             const element = await dbase.mediaArray(result, message);
 
             response = Response.genImageTemplate2(element);
+        } else if (message.match(new RegExp(productSubcateg.join('|'), 'g')) !== null) {
+            const subcateg = message.match(new RegExp(productSubcateg.join('|'), 'g'))[0].toLowerCase();
+            const result = await dbase.queryData("SELECT subcategory, imageURL, gender FROM Products WHERE subcategory = \"" + subcateg + "\" GROUP BY subcategory, gender");
+            const element = await dbase.mediaArray(result, message);
+
+            response = Response.genImageTemplate2(element);
         } else {
             response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
                 {
