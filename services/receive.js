@@ -139,7 +139,7 @@ module.exports = class Receive {
         } else if (/^\d+$/.test(message)) {
             if (this.user.psid in faqs) {
                 const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + faqs[this.user.psid][Number(message)] + "\"");
-
+                console.log(faqs[this.user.psid][Number(message)]);
                 let choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
                 response = [Response.genImageTemplate(result[0].imageURL), Response.genQuickReply(result[0].answers, choice)];
             } else {
