@@ -240,7 +240,7 @@ module.exports = class Receive {
 
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2({ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] })];
+                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2({ title: "or ", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] })];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
