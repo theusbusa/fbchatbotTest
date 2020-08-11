@@ -229,9 +229,18 @@ module.exports = class Receive {
                     choice = await dbase.keyboardButton(choice, list);
                     response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
                 } else {
+                    var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
+                    let temp = "\n\n";
+                    let choice = [];
 
+                    for (var i = 0; i < 4; i++) {
+                        choice.push(i + 1)
+                        temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
+                    }
 
+                    choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
+                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2({ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] })];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
