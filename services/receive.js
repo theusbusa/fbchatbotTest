@@ -195,7 +195,7 @@ module.exports = class Receive {
             let choice = [];
             list = [];
 
-            console.log(faqs[this.user.psid][1]);
+            console.log(faqs[this.user.psid][1].replace(/\n$/, ''));
             for (var i = 0; i < 4; i++) {
                 choice.push(i + 1)
                 list.push(faqs[this.user.psid][i + 1])
