@@ -229,7 +229,7 @@ module.exports = class Receive {
                     choice = await dbase.keyboardButton(choice, list);
                     response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
                 } else {
-                    const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs ORDER BY RAND() LIMIT 3"));
+                    var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs ORDER BY RAND() LIMIT 3"));
                     let temp = "\n\n";
                     let choice = [];
 
@@ -242,7 +242,7 @@ module.exports = class Receive {
                     list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2([{ title: "or ", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
+                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
