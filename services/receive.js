@@ -193,9 +193,11 @@ module.exports = class Receive {
             faqs[this.user.psid] = conv;
             let temp = "\n\n";
             let choice = [];
+            list = [];
 
             for (var i = 0; i < 4; i++) {
                 choice.push(i + 1)
+                list.push(faqs[this.user.psid][i + init])
                 temp = temp + ((i + 1).toString() + ". " + faqs[this.user.psid][i + 1].replace(/\n$/, '') + "\n");
                 delete faqs[this.user.psid][i + 1];
             }
