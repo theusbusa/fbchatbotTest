@@ -188,7 +188,7 @@ module.exports = class Receive {
 
             response = Response.genQuickReply("Please select from the following top FAQs:" + temp, result);
         } else if (categ.indexOf(payload) > -1) {
-            const list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
+            var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
             const conv = await dbase.convertToJSON(list);
             faqs[this.user.psid] = conv;
             let temp = "\n\n";
@@ -211,11 +211,13 @@ module.exports = class Receive {
                     const len = Object.keys(faqs[this.user.psid]).length;
                     let temp = "\n\n";
                     let choice = [];
+                    let list = [];
 
                     for (var i = 0; i < len; i++) {
                         if (i === 4) break;
 
                         choice.push(i + init)
+                        list.push(faqs[this.user.psid][i + init])
                         temp = temp + ((i + init).toString() + ". " + faqs[this.user.psid][i + init].replace(/\n$/, '') + "\n");
                         delete faqs[this.user.psid][i + init];
                     }
