@@ -138,7 +138,7 @@ module.exports = class Receive {
             response = Response.genImageTemplate2(element);
         } else {
             if (message.match(new RegExp(words.join('|'), 'g')) !== null) {
-                var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE artcles REGEXP \"" + message.match(new RegExp(words.join('|'), 'g')).join('|') + "\""));
+                var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE articles REGEXP \"" + message.match(new RegExp(words.join('|'), 'g')).join('|') + "\""));
                 const conv = await dbase.convertToJSON(list);
                 faqs[this.user.psid] = conv;
                 let temp = "\n\n";
