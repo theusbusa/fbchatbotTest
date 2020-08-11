@@ -195,8 +195,7 @@ module.exports = class Receive {
             let choice = [];
             list = [];
 
-            console.log(payload);
-            console.log(faqs);
+            console.log(faqs[this.user.psid][1]);
             for (var i = 0; i < 4; i++) {
                 choice.push(i + 1)
                 list.push(faqs[this.user.psid][i + 1])
@@ -244,7 +243,7 @@ module.exports = class Receive {
                     list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genImageTemplate2([{ title: "Here are other FAQs that might help:" + temp, subtitle: "", buttons: [{ type: "postback", title: "1. " + list[0], payload: list[0] }, { type: "postback", title: "2" + list[1], payload: list[1] }, { type: "postback", title: "3" + list[2], payload: list[2] }] }]), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
+                    response = [Response.genText("Here are other FAQs that might help:" + temp), Response.genImageTemplate2([{ title: "Please select from the following:", subtitle: "", buttons: [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }] }]), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
