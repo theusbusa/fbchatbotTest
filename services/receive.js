@@ -229,7 +229,7 @@ module.exports = class Receive {
                     choice = await dbase.keyboardButton(choice, list);
                     response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
                 } else {
-                    var list = await dbase.convertToList(await dbase.queryData("SELECT articles FROM FAQs WHERE category = \"" + payload + "\""));
+                    var list = await dbase.convertToList(await dbase.queryData("SELECT * FROM omnichannel.FAQs ORDER BY RAND() LIMIT 3"));
                     let temp = "\n\n";
                     let choice = [];
 
