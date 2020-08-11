@@ -194,8 +194,11 @@ module.exports = class Receive {
             let temp = "\n\n";
             let choice = [];
             list = [];
+            const len = Object.keys(faqs[this.user.psid]).length;
 
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < len; i++) {
+                if (i === 4) break;
+
                 choice.push(i + 1)
                 list.push(faqs[this.user.psid][i + 1])
                 temp = temp + ((i + 1).toString() + ". " + faqs[this.user.psid][i + 1].replace(/\n$/, '') + "\n");
@@ -248,7 +251,7 @@ module.exports = class Receive {
         } else if (articles.indexOf(payload) > -1) {
             const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + payload + "\"");
 
-            choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
+            let choice = await dbase.keyboardButton(["Back to FAQ Menu", "Back to Main Menu"], ["faqs", "hi"]);
             response = [Response.genQuickReply(result[0].answers, choice), Response.genImageTemplate(result[0].imageURL)];
         } else if (productCateg.indexOf(payload) > -1) {
             const categ = payload.split("_")[0];
