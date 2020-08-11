@@ -197,9 +197,11 @@ module.exports = class Receive {
             for (var i = 0; i < 4; i++) {
                 choice.push(i + 1)
                 temp = temp + ((i + 1).toString() + ". " + faqs[this.user.psid][i + 1].replace(/\n$/, '') + "\n");
-                delete test[id][i + 1];
+                delete faqs[id][i + 1];
             }
 
+            choice.push("More");
+            list.push("more");
             choice = await dbase.keyboardButton(choice, list);
             response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
         } else if (payload === "more") {
@@ -215,9 +217,11 @@ module.exports = class Receive {
 
                         choice.push(i + init)
                         temp = temp + ((i + init).toString() + ". " + faqs[this.user.psid][i + init].replace(/\n$/, '') + "\n");
-                        delete test[id][i + init];
+                        delete faqs[id][i + init];
                     }
 
+                    choice.push("More");
+                    list.push("more");
                     choice = await dbase.keyboardButton(choice, list);
                     response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
                 } else {
