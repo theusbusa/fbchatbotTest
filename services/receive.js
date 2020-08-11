@@ -229,11 +229,11 @@ module.exports = class Receive {
                     choice = await dbase.keyboardButton(choice, list);
                     response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
                 } else {
-                    var list = await dbase.convertToList(await dbase.queryData("SELECT * FROM omnichannel.FAQs ORDER BY RAND() LIMIT 3"));
+                    const list = await dbase.convertToList(await dbase.queryData("SELECT * FROM FAQs ORDER BY RAND() LIMIT 3"));
                     let temp = "\n\n";
                     let choice = [];
 
-                    for (var i = 0; i < 4; i++) {
+                    for (var i = 0; i < list.length; i++) {
                         choice.push(i + 1)
                         temp = temp + ((i + 1).toString() + ". " + list[i].replace(/\n$/, '') + "\n");
                     }
