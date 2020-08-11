@@ -242,7 +242,7 @@ module.exports = class Receive {
                     list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genQuickReply("Here are other FAQs that might help:" + temp, choice), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
+                    response = [Response.genImageTemplate2([{ title: "Here are other FAQs that might help:", subtitle: temp, buttons: [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }] }]), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
