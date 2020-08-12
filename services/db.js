@@ -86,7 +86,7 @@ module.exports = class DbService {
         } else if (Object.keys(result[0]).length === 4) {
             for (var i = 0; i < result.length; i++) {
                 var t = result[i]
-                array.push({ title: t[Object.keys(t)[0]], subtitle: "PHP" + t[Object.keys(t)[1]], image_url: t[Object.keys(t)[2]], buttons: [{ type: "web_url", title: "Order Here", url: t[Object.keys(t)[3]] }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Main Menu", payload: "hi" }] });
+                array.push({ title: t[Object.keys(t)[0]], subtitle: "PHP" + t[Object.keys(t)[1]], image_url: t[Object.keys(t)[2]], buttons: [{ type: "postback", title: "Add to Cart", payload: "add_to_cart_" + t[Object.keys(t)[0]] }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Main Menu", payload: "hi" }] });
             }
         }
         

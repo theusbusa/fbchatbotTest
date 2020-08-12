@@ -7,6 +7,7 @@ const
     i18n = require("../i18n.config");
 
 var faqs = {};
+var cart = {};
 
 module.exports = class Receive {
     constructor(user, webhookEvent) {
@@ -136,7 +137,26 @@ module.exports = class Receive {
             const element = await dbase.mediaArray(result, message);
 
             response = Response.genImageTemplate2(element);
-        }/* else if (/^\d+$/.test(message)) {
+        } else if (/^\d+$/.test(message)) {
+            if (this.user.psid in cart) {
+                const quantity = Number(message);
+                const productName = cart[this.user.psid];
+                delete cart[this.user.psid];
+
+                response = Response.genText("You added " + quantity + " " + productName + " to your cart.");
+            } else {
+                response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
+                    {
+                        title: "Shop",
+                        payload: "shop"
+                    },
+                    {
+                        title: "FAQs",
+                        payload: "faqs"
+                    }
+                ]);
+            }           
+        } /* else if (/^\d+$/.test(message)) {
             if (this.user.psid in faqs) {
                 const result = await dbase.queryData("SELECT answers, imageURL FROM FAQs WHERE articles = \"" + faqs[this.user.psid][message] + "\"");
                 console.log(faqs[this.user.psid]);
@@ -235,6 +255,11 @@ module.exports = class Receive {
             const element = await dbase.mediaArray(result, payload);
 
             response = [Response.genText("What are you looking for?"), Response.genImageTemplate2(element)];
+        } else if (payload.match(new RegExp(["add_to_cart"].join('|'), 'g')) !== null) {
+            const productName = payload.split('_')[3];
+            cart[this.user.psid] = productName;
+
+            response = Response.genText("How many?");
         } else if (payload === "faqs") {
             const list = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
             const result = await dbase.keyboardButton(list);
