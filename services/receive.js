@@ -298,7 +298,7 @@ module.exports = class Receive {
                     list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genButtonTemplate("Here are other FAQs that might help:" + temp, [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }]), Response.genButtonTemplate("or contact us by clicking the button below.", [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }, { type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }, { type: "postback", title: "Back to FAQ Menu", payload: "faqs" }, { type: "postback", title: "Back to Main Menu", payload: "hi" }])];
+                    response = [Response.genButtonTemplate("Here are other FAQs that might help:" + temp, [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }]), Response.genButtonTemplate("or contact us by clicking the button below.", [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }, { type: "postback", title: "Back to FAQ Menu", payload: "faqs" }, { type: "postback", title: "Back to Main Menu", payload: "hi" }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
