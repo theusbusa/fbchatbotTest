@@ -77,22 +77,7 @@ module.exports = class Receive {
         const words = ["how", "can", "what", "where", "why", "order", "pay", "cancel", "credit", "debit", "card", "deliver", "ship", "item", "return"];
 
         if (message === "hello" || message === "hi") {
-            response = [
-                Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
-                    {
-                        title: "Shop",
-                        payload: "shop"
-                    },
-                    {
-                        title: "FAQs",
-                        payload: "faqs"
-                    },
-                    {
-                        title: "View Cart",
-                        payload: "cart"
-                    }
-                ])
-            ];
+            response = Response.genButtonTemplate("Hi, " + this.user.firstName + "! What can we do to help you today?", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
         } else if (message === "faqs" || message === "faq") {
             let query = "SELECT DISTINCT category FROM FAQs";
             const r = await dbase.queryData(query);
@@ -147,22 +132,9 @@ module.exports = class Receive {
                 const productName = cart[this.user.psid];
                 delete cart[this.user.psid];
 
-                response = Response.genImageTemplate2([{ title: "You added " + quantity + " " + productName + " to your cart.", subtitle: "", buttons: [{ type: "postback", title: "View Cart", payload: "cart" }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }] }]);
+                response = Response.genButtonTemplate("You added " + quantity + " " + productName + " to your cart.", subtitle: "", [{ type: "postback", title: "View Cart", payload: "cart" }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }]);
             } else {
-                response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                    {
-                        title: "Shop",
-                        payload: "shop"
-                    },
-                    {
-                        title: "FAQs",
-                        payload: "faqs"
-                    },
-                    {
-                        title: "View Cart",
-                        payload: "cart"
-                    }
-                ]);
+                response = Response.genButtonTemplate("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
             }           
         } /* else if (/^\d+$/.test(message)) {
             if (this.user.psid in faqs) {
@@ -210,20 +182,7 @@ module.exports = class Receive {
                 choice = await dbase.keyboardButton(choice, list);
                 response = Response.genQuickReply("Please select from the following FAQs:" + temp + "\nCan't find your question? Click \"More\".", choice);
             } else {
-                response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                    {
-                        title: "Shop",
-                        payload: "shop"
-                    },
-                    {
-                        title: "FAQs",
-                        payload: "faqs"
-                    },
-                    {
-                        title: "View Cart",
-                        payload: "cart"
-                    }
-                ]);
+                response = Response.genButtonTemplate("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
             }
             
         }
@@ -254,22 +213,7 @@ module.exports = class Receive {
 
         // Set the response based on the payload
         if (payload === "hello" || payload === "hi") {
-            response = [
-                Response.genQuickReply("Hi, " + this.user.firstName + "! What can we do to help you today?", [
-                    {
-                        title: "Shop",
-                        payload: "shop"
-                    },
-                    {
-                        title: "FAQs",
-                        payload: "faqs"
-                    },
-                    {
-                        title: "View Cart",
-                        payload: "cart"
-                    }
-                ])
-            ];
+            response = Response.genButtonTemplate("Hi, " + this.user.firstName + "! What can we do to help you today?", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
         } else if (payload === "start") {
             response = [Response.genText("Hello, " + this.user.firstName + "!"), Response.genButtonTemplate("Welcome to Penshoppe, your guide to everyday fashion. What can we do for you today?", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }])];
         } else if (payload === "shop") {
@@ -354,7 +298,7 @@ module.exports = class Receive {
                     list = list.concat(["faqs", "hi"]);
                     choice = await dbase.keyboardButton(choice, list);
                     delete faqs[this.user.psid];
-                    response = [Response.genText("Here are other FAQs that might help:" + temp), Response.genImageTemplate2([{ title: "Please select from the following:", subtitle: "", buttons: [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }] }]), Response.genImageTemplate2([{ title: "or contact us by clicking the button below.", subtitle: "", buttons: [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }] }])];
+                    response = [Response.Response.genButtonTemplate("Here are other FAQs that might help:" + temp, [{ type: "postback", title: "1", payload: list[0] }, { type: "postback", title: "2", payload: list[1] }, { type: "postback", title: "3", payload: list[2] }]), Response.genButtonTemplate("or contact us by clicking the button below.", [{ type: "web_url", title: "Contact Us", url: "https://www.penshoppe.com/pages/contact-us" }])];
                 }
             }
         } else if (articles.indexOf(payload) > -1) {
@@ -377,20 +321,7 @@ module.exports = class Receive {
 
             response = Response.genImageTemplate2(element);
         } else {
-            response = Response.genQuickReply("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [
-                {
-                    title: "Shop",
-                    payload: "shop"
-                },
-                {
-                    title: "FAQs",
-                    payload: "faqs"
-                },
-                {
-                    title: "View Cart",
-                    payload: "cart"
-                }
-            ]);
+            response = Response.genButtonTemplate("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
         }
 
         return response;
