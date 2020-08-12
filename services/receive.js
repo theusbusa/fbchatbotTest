@@ -270,6 +270,8 @@ module.exports = class Receive {
                     }
                 ])
             ];
+        } else if (payload === "start") {
+            response = [Response.genText("Hello, " + this.user.firstName + "!"), Response.genButtonTemplate("Welcome to Penshoppe, your guide to everyday fashion. What can we do for you today?", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }])];
         } else if (payload === "shop") {
             const result = await dbase.queryData("SELECT category, imageURL, gender FROM Products GROUP BY category, gender");
             const element = await dbase.mediaArray(result, payload);
