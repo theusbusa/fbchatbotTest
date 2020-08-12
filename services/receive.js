@@ -86,6 +86,10 @@ module.exports = class Receive {
                     {
                         title: "FAQs",
                         payload: "faqs"
+                    },
+                    {
+                        title: "View Cart",
+                        payload: "cart"
                     }
                 ])
             ];
@@ -153,6 +157,10 @@ module.exports = class Receive {
                     {
                         title: "FAQs",
                         payload: "faqs"
+                    },
+                    {
+                        title: "View Cart",
+                        payload: "cart"
                     }
                 ]);
             }           
@@ -171,6 +179,10 @@ module.exports = class Receive {
                     {
                         title: "FAQs",
                         payload: "faqs"
+                    },
+                    {
+                        title: "View Cart",
+                        payload: "cart"
                     }
                 ]);
             }           
@@ -206,6 +218,10 @@ module.exports = class Receive {
                     {
                         title: "FAQs",
                         payload: "faqs"
+                    },
+                    {
+                        title: "View Cart",
+                        payload: "cart"
                     }
                 ]);
             }
@@ -247,6 +263,10 @@ module.exports = class Receive {
                     {
                         title: "FAQs",
                         payload: "faqs"
+                    },
+                    {
+                        title: "View Cart",
+                        payload: "cart"
                     }
                 ])
             ];
@@ -260,6 +280,13 @@ module.exports = class Receive {
             cart[this.user.psid] = productName;
 
             response = Response.genText("How many?");
+        } else if (payload === "cart") {
+            if (this.user.psid in cart) {
+                response = Response.genText("THIS FEATURE IS IN DEVELOPMENT.");
+            } else {
+                choice = await dbase.keyboardButton(["Shop"],["shop"]);
+                response = Response.genQuickReply("You don't have any items in your cart. Click \"Shop\" to browse items.", choice);
+            }
         } else if (payload === "faqs") {
             const list = await dbase.convertToList(await dbase.queryData("SELECT DISTINCT category FROM FAQs"));
             const result = await dbase.keyboardButton(list);
@@ -359,6 +386,10 @@ module.exports = class Receive {
                 {
                     title: "FAQs",
                     payload: "faqs"
+                },
+                {
+                    title: "View Cart",
+                    payload: "cart"
                 }
             ]);
         }
