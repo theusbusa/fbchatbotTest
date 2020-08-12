@@ -132,7 +132,7 @@ module.exports = class Receive {
                 const productName = cart[this.user.psid];
                 delete cart[this.user.psid];
 
-                response = Response.genButtonTemplate("You added " + quantity + " " + productName + " to your cart.", subtitle: "", [{ type: "postback", title: "View Cart", payload: "cart" }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }]);
+                response = Response.genButtonTemplate("You added " + quantity + " " + productName + " to your cart.", [{ type: "postback", title: "View Cart", payload: "cart" }, { type: "postback", title: "Back to Shop Menu", payload: "shop" }, { type: "postback", title: "Back to Menu", payload: "hi" }]);
             } else {
                 response = Response.genButtonTemplate("I'm sorry " + this.user.firstName + ", either the item you're looking for is not available or I can't recognize what you said. If you want to shop, please click \"Shop\" and if you want to view frequently asked questions, please click \"FAQs\".", [{ type: "postback", title: "Shop", payload: "shop" }, { type: "postback", title: "FAQs", payload: "faqs" }, { type: "postback", title: "View Cart", payload: "cart" }]);
             }           
